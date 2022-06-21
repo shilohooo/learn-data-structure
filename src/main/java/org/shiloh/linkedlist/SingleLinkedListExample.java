@@ -18,10 +18,18 @@ public class SingleLinkedListExample {
         // 实例化链表
         final SingleLinkedList singleLinkedList = new SingleLinkedList();
         // 添加节点
-        singleLinkedList.add(heroNode01);
-        singleLinkedList.add(heroNode04);
-        singleLinkedList.add(heroNode02);
-        singleLinkedList.add(heroNode03);
+        // singleLinkedList.add(heroNode01);
+        // singleLinkedList.add(heroNode04);
+        // singleLinkedList.add(heroNode02);
+        // singleLinkedList.add(heroNode03);
+
+        // 测试按照英雄编号顺序添加
+        singleLinkedList.addByNo(heroNode01);
+        singleLinkedList.addByNo(heroNode04);
+        singleLinkedList.addByNo(heroNode02);
+        singleLinkedList.addByNo(heroNode03);
+        // 测试插入编号已存在的节点
+        // singleLinkedList.addByNo(heroNode03);
         // 显示链表
         singleLinkedList.list();
     }
@@ -67,6 +75,55 @@ class SingleLinkedList {
         }
         // 当循环结束后，tempNode 指向最后一个节点
         // 此时，将最后一个节点的 next 引用指向新的节点即可
+        tempNode.setNext(newNode);
+    }
+
+    /**
+     * 根据编号将英雄人物插入到指定的位置中，如果该位置已有数据，则不能添加，需要给出错误提示
+     *
+     * @param newNode 新的节点
+     * @author shiloh
+     * @date 2022/6/21 22:48
+     */
+    public void addByNo(HeroNode newNode) {
+        // 在不修改头节点的情况下，使用临时变量找到新节点的位置
+        // 由于单链表的特性，临时变量应该位于新节点的前一个位置，此时才能正确的插入新的节点。
+        HeroNode tempNode = HEAD;
+        // 标识英雄人物的编号是否已经存在
+        boolean isExist = false;
+        // 遍历链表，找到新节点的位置
+        final int newNodeNo = newNode.getNo();
+        while (true) {
+            // 当前遍历节点的 next 引用为空时，说明已经遍历到最后一个节点
+            // 此时应该直接退出循环，无需继续查找
+            // 随后将新节点直接添加到链表最后即可
+            final HeroNode nextNode = tempNode.getNext();
+            if (nextNode == null) {
+                break;
+            }
+            // 如果 nextNode 的编号大于新节点的编号，则说明新节点的位置已经找到
+            // 新节点的位置就位于 tempNode 和 nextNode 之间
+            final int nextNodeNo = nextNode.getNo();
+            if (nextNodeNo > newNodeNo) {
+                break;
+            }
+            // 如果 nextNode 的编号等于新节点的编号，则说明该编号已经存在，不能添加
+            if (nextNodeNo == newNodeNo) {
+                isExist = true;
+                break;
+            }
+            // 以上条件不成立时，将临时节点指向下一个节点，继续遍历
+            tempNode = nextNode;
+        }
+
+        // 如果 isExist 为 true，则说明该编号已经存在，不能添加
+        if (isExist) {
+            System.out.printf("编号为：%d 的英雄人物已经存在，不能添加\n", newNodeNo);
+            return;
+        }
+
+        // 将新的节点插入到链表中
+        newNode.setNext(tempNode.getNext());
         tempNode.setNext(newNode);
     }
 
@@ -153,6 +210,18 @@ class HeroNode {
 
     public HeroNode getNext() {
         return next;
+    }
+
+    public Integer getNo() {
+        return no;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getNickname() {
+        return nickname;
     }
 
     @Override
