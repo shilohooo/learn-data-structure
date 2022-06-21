@@ -28,8 +28,10 @@ public class SingleLinkedListExample {
         singleLinkedList.addByNo(heroNode04);
         singleLinkedList.addByNo(heroNode02);
         singleLinkedList.addByNo(heroNode03);
+
         // 测试插入编号已存在的节点
         // singleLinkedList.addByNo(heroNode03);
+
         // 显示链表
         singleLinkedList.list();
     }
