@@ -29,10 +29,17 @@ public class SingleLinkedListExample {
         singleLinkedList.addByNo(heroNode02);
         singleLinkedList.addByNo(heroNode03);
 
+        System.out.println("修改前的链表数据：");
+        singleLinkedList.list();
+
+        // 测试修改节点信息
+        singleLinkedList.update(new HeroNode(4, "老林头", "豹子头~~"));
+
         // 测试插入编号已存在的节点
         // singleLinkedList.addByNo(heroNode03);
 
         // 显示链表
+        System.out.println("修改后的链表数据：");
         singleLinkedList.list();
     }
 }
@@ -130,6 +137,48 @@ class SingleLinkedList {
     }
 
     /**
+     * 根据英雄编号修改节点信息（编号不能修改）
+     *
+     * @param heroNode 要修改的节点
+     * @author shiloh
+     * @date 2022/6/24 22:33
+     */
+    public void update(HeroNode heroNode) {
+        // 先判断链表是否为空
+        if (this.isEmpty()) {
+            System.out.println("链表为空，不能修改");
+            return;
+        }
+
+        // 借助临时变量遍历节点
+        HeroNode tempNode = HEAD.getNext();
+        boolean isExist = false;
+        final int heroNodeNo = heroNode.getNo();
+        while (true) {
+            // 当临时遍历为空 时，说明已经到了链表末尾
+            if (tempNode == null) {
+                break;
+            }
+            // 如果临时变量的编号等于要修改的节点的编号，则说明已经找到了要修改的节点
+            if (tempNode.getNo().equals(heroNodeNo)) {
+                isExist = true;
+                break;
+            }
+            // 将临时节点指向下一个节点，然后继续遍历
+            tempNode = tempNode.getNext();
+        }
+
+        // 如果找到了则修改节点的英雄姓名和昵称
+        if (!isExist) {
+            System.out.printf("没有找到编号为：%d 的英雄信息，无法修改", heroNodeNo);
+            return;
+        }
+
+        tempNode.setName(heroNode.getName());
+        tempNode.setNickname(heroNode.getNickname());
+    }
+
+    /**
      * 输出链表信息
      *
      * @author shiloh
@@ -179,12 +228,12 @@ class HeroNode {
     /**
      * 姓名
      */
-    private final String name;
+    private String name;
 
     /**
      * 昵称
      */
-    private final String nickname;
+    private String nickname;
 
     /**
      * 指向下一个节点的引用
@@ -218,8 +267,16 @@ class HeroNode {
         return no;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getNickname() {
