@@ -41,6 +41,18 @@ public class SingleLinkedListExample {
         // 显示链表
         System.out.println("修改后的链表数据：");
         singleLinkedList.list();
+
+        // 测试删除节点
+        System.out.println("删除节点前的链表数据：");
+        singleLinkedList.list();
+
+        singleLinkedList.deleteByNo(1);
+        // singleLinkedList.deleteByNo(4);
+        // singleLinkedList.deleteByNo(3);
+        singleLinkedList.deleteByNo(2);
+
+        System.out.println("删除节点后的链表数据：");
+        singleLinkedList.list();
     }
 }
 
@@ -176,6 +188,49 @@ class SingleLinkedList {
 
         tempNode.setName(heroNode.getName());
         tempNode.setNickname(heroNode.getNickname());
+    }
+
+    /**
+     * 根据编号删除指定的节点，思路如下：
+     * <ol>
+     *     <li>借助临时变量，找到要删除的节点的上一个节点</li>
+     *     <li>将临时变量的 next 引用指向要删除的节点的 next 引用</li>
+     * </ol>
+     *
+     * @author shiloh
+     * @date 2022/6/24 22:54
+     */
+    public void deleteByNo(final int no) {
+        // 链表为空，不能删除
+        if (this.isEmpty()) {
+            System.out.println("链表为空，不能删除");
+            return;
+        }
+
+        // 借助临时变量遍历链表
+        HeroNode tempNode = HEAD;
+        boolean isExist = false;
+        while (true) {
+            // 当临时变量为空时，说明已经到了链表末尾
+            if (tempNode == null) {
+                break;
+            }
+            // 当临时变量的 next 引用指向的节点的编号等于要删除的节点的编号时，说明找到了要删除的节点
+            if (tempNode.getNext().getNo().equals(no)) {
+                isExist = true;
+                break;
+            }
+            // 将临时变量指向下一个节点，然后继续遍历
+            tempNode = tempNode.getNext();
+        }
+
+        if (!isExist) {
+            System.out.printf("没有找到编号为：%d 的英雄信息，无法删除\n", no);
+            return;
+        }
+
+        // 如果找到了要删除的节点，则将临时变量的 next 引用指向要删除的节点的 next 引用
+        tempNode.setNext(tempNode.getNext().getNext());
     }
 
     /**
