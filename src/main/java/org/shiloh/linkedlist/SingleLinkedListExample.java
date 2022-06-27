@@ -42,6 +42,10 @@ public class SingleLinkedListExample {
         System.out.println("修改后的链表数据：");
         singleLinkedList.list();
 
+        // 测试获取链表中的有效节点数量
+        final int length = getLength(singleLinkedList.getHead());
+        System.out.printf("链表中有效节点的数量：%d\n", length);
+
         // 测试删除节点
         System.out.println("删除节点前的链表数据：");
         singleLinkedList.list();
@@ -53,6 +57,81 @@ public class SingleLinkedListExample {
 
         System.out.println("删除节点后的链表数据：");
         singleLinkedList.list();
+
+        // 测试获取倒数第 k 个节点
+        final int k = 1;
+        final HeroNode result = findLastIndexNode(singleLinkedList.getHead(), 2);
+        System.out.printf("倒数第 %d 个节点为：%s", k, result);
+    }
+
+    /**
+     * 面试题解答：求单链表中节点的个数（如果是带头节点，则需要去掉头节点，因为头节点并不存放数据）
+     *
+     * @param head 头节点
+     * @return 单链表中有效节点的个数
+     * @author shiloh
+     * @date 2022/6/27 22:11
+     */
+    public static int getLength(HeroNode head) {
+        // 定义一个临时遍历，用于遍历链表
+        HeroNode current = head.getNext();
+        if (current == null) {
+            // 如果 current 为空，说明链表为空，直接返回 0 即可
+            return 0;
+        }
+
+        int length = 0;
+        // 遍历链表
+        while (current != null) {
+            // 节点数量递增
+            length++;
+            // 继续往下遍历
+            current = current.getNext();
+        }
+
+        // 遍历结束后，返回节点数量
+        return length;
+    }
+
+    /**
+     * 面试题解答：查找单链表中的倒数第 k 个节点，思路如下：
+     *
+     * <ol>
+     *     <li>编写一个方法，要求接收头节点和一个代表 k 的 index</li>
+     *     <li>从头开始遍历链表，得到链表的总长度：length</li>
+     *     <li>再从链表的第一个节点开始遍历，直接（length - k）个节点，即可找到要查找的节点</li>
+     *     <li>如果找不到，则返回 {@code null}</li>
+     * </ol>
+     *
+     * @param head  头节点
+     * @param index 代表倒数第 k 个节点的索引
+     * @return 如果找到了，则倒数第 k 个节点，否则返回 {@code null}
+     * @author shiloh
+     * @date 2022/6/27 22:23
+     */
+    public static HeroNode findLastIndexNode(HeroNode head, int index) {
+        // 定义一个临时遍历，用于遍历链表
+        HeroNode tempNode = head.getNext();
+        // 如果链表为空，则直接返回 null
+        if (tempNode == null) {
+            return null;
+        }
+
+        // 得到链表的总长度
+        final int length = getLength(head);
+
+        // 第二次遍历，从链表的第一个节点开始遍历，直接（length - index）个节点，即可找到要查找的节点
+        // 先校验 index 是否合法
+        if (index < 0 || index > length) {
+            return null;
+        }
+
+        // 遍历
+        for (int i = 0; i < (length - index); i++) {
+            tempNode = tempNode.getNext();
+        }
+
+        return tempNode;
     }
 }
 
@@ -67,6 +146,17 @@ class SingleLinkedList {
      * 定义头节点，无需存放具体的数据
      */
     private final HeroNode HEAD = new HeroNode(0, "", "");
+
+    /**
+     * 获取头节点
+     *
+     * @return 头节点
+     * @author shiloh
+     * @date 2022/6/27 22:17
+     */
+    public HeroNode getHead() {
+        return this.HEAD;
+    }
 
     /**
      * 添加节点到单向链表中（不考虑英雄人物编号顺序）
