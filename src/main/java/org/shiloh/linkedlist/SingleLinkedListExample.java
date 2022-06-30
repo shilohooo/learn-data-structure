@@ -29,39 +29,47 @@ public class SingleLinkedListExample {
         singleLinkedList.addByNo(heroNode02);
         singleLinkedList.addByNo(heroNode03);
 
-        System.out.println("修改前的链表数据：");
+        // System.out.println("修改前的链表数据：");
+        // singleLinkedList.list();
+        //
+        // // 测试修改节点信息
+        // singleLinkedList.update(new HeroNode(4, "老林头", "豹子头~~"));
+        //
+        // // 测试插入编号已存在的节点
+        // // singleLinkedList.addByNo(heroNode03);
+        //
+        // // 显示链表
+        // System.out.println("修改后的链表数据：");
+        // singleLinkedList.list();
+        //
+        // // 测试获取链表中的有效节点数量
+        // final int length = getLength(singleLinkedList.getHead());
+        // System.out.printf("链表中有效节点的数量：%d\n", length);
+        //
+        // // 测试删除节点
+        // System.out.println("删除节点前的链表数据：");
+        // singleLinkedList.list();
+        //
+        // singleLinkedList.deleteByNo(1);
+        // // singleLinkedList.deleteByNo(4);
+        // // singleLinkedList.deleteByNo(3);
+        // singleLinkedList.deleteByNo(2);
+        //
+        // System.out.println("删除节点后的链表数据：");
+        // singleLinkedList.list();
+        //
+        // // 测试获取倒数第 k 个节点
+        // final int k = 1;
+        // final HeroNode result = findLastIndexNode(singleLinkedList.getHead(), 2);
+        // System.out.printf("倒数第 %d 个节点为：%s", k, result);
+
+        // 测试反转链表
+        System.out.println("反转前的链表数据：");
         singleLinkedList.list();
 
-        // 测试修改节点信息
-        singleLinkedList.update(new HeroNode(4, "老林头", "豹子头~~"));
-
-        // 测试插入编号已存在的节点
-        // singleLinkedList.addByNo(heroNode03);
-
-        // 显示链表
-        System.out.println("修改后的链表数据：");
+        reverseLink(singleLinkedList.getHead());
+        System.out.println("反转后的链表数据：");
         singleLinkedList.list();
-
-        // 测试获取链表中的有效节点数量
-        final int length = getLength(singleLinkedList.getHead());
-        System.out.printf("链表中有效节点的数量：%d\n", length);
-
-        // 测试删除节点
-        System.out.println("删除节点前的链表数据：");
-        singleLinkedList.list();
-
-        singleLinkedList.deleteByNo(1);
-        // singleLinkedList.deleteByNo(4);
-        // singleLinkedList.deleteByNo(3);
-        singleLinkedList.deleteByNo(2);
-
-        System.out.println("删除节点后的链表数据：");
-        singleLinkedList.list();
-
-        // 测试获取倒数第 k 个节点
-        final int k = 1;
-        final HeroNode result = findLastIndexNode(singleLinkedList.getHead(), 2);
-        System.out.printf("倒数第 %d 个节点为：%s", k, result);
     }
 
     /**
@@ -132,6 +140,46 @@ public class SingleLinkedListExample {
         }
 
         return tempNode;
+    }
+
+    /**
+     * 反转单链表，实现思路如下：
+     *
+     * <ol>
+     *     <li>定义一个临时变量，用于遍历链表</li>
+     *     <li>从头开始遍历链表，每遍历一个节点，就将其取出，并放到临时变量的最前端</li>
+     *     <li>遍历完成后，将原先的头节点的 next 引用指向临时遍历的 next 引用</li>
+     * </ol>
+     *
+     * @param head 头节点
+     * @author shiloh
+     * @date 2022/6/30 22:23
+     */
+    public static void reverseLink(HeroNode head) {
+        // 如果链表为空，或者只包含一个有效节点，则无需遍历
+        HeroNode firstNode = head.getNext();
+        if (firstNode == null || firstNode.getNext() == null) {
+            return;
+        }
+
+        // 定义一个临时遍历，辅助遍历链表，用于获取每次遍历到的节点
+        HeroNode next;
+        // 定义一个临时头部节点，用作新链表的头节点
+        final HeroNode reverseHead = new HeroNode(0, "", "");
+        // 遍历链表
+        while (firstNode != null) {
+            // 缓存下一个节点
+            next = firstNode.getNext();
+            // 将当前节点的 next 引用指向新链表的最前端，第一次遍历时，临时头部变量的 next 引用为 null
+            // 后续遍历时，当前节点的 next 引用指向临时头部节点的 next 引用
+            firstNode.setNext(reverseHead.getNext());
+            // 将当前节点连接到新链表上
+            reverseHead.setNext(firstNode);
+            // 移动到下一个节点，继续遍历
+            firstNode = next;
+        }
+        // 遍历结束后，将原先的头节点的 next 引用指向临时头部变量的 next 引用，实现单链表反转
+        head.setNext(reverseHead.getNext());
     }
 }
 
