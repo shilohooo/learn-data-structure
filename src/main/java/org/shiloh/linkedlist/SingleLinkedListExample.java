@@ -74,12 +74,28 @@ public class SingleLinkedListExample {
         // singleLinkedList.list();
 
         // 测试逆序打印链表
-        System.out.println("原来的链表：");
-        singleLinkedList.list();
+        // System.out.println("原来的链表：");
+        // singleLinkedList.list();
 
         // 逆序打印
-        System.out.println("逆序打印的链表：");
-        reversePrint(singleLinkedList.getHead());
+        // System.out.println("逆序打印的链表：");
+        // reversePrint(singleLinkedList.getHead());
+
+        // 测试合并两个有序的链表
+        // 创建链表B
+        final HeroNode heroNode05 = new HeroNode(5, "关胜", "大刀");
+        final HeroNode heroNode06 = new HeroNode(6, "秦明", "霹雳火");
+        final HeroNode heroNode07 = new HeroNode(7, "呼延灼", "双鞭");
+        final HeroNode heroNode08 = new HeroNode(8, "花荣", "小李广");
+        final SingleLinkedList linkB = new SingleLinkedList();
+        linkB.addByNo(heroNode05);
+        linkB.addByNo(heroNode07);
+        linkB.addByNo(heroNode08);
+        linkB.addByNo(heroNode06);
+        final SingleLinkedList newLink = merge(singleLinkedList.getHead(), linkB.getHead());
+        // 输出合并后的链表
+        System.out.println("合并后的有序链表为：");
+        newLink.list();
     }
 
     /**
@@ -217,6 +233,53 @@ public class SingleLinkedListExample {
         while (stack.size() > 0) {
             System.out.println(stack.pop());
         }
+    }
+
+    /**
+     * 合并两个有序的链表，合并后的链表依然是有序的
+     * <p>
+     * 实现思路如下：
+     * <p>
+     * 按顺序创建新的链表，当发现两个链表中较小的一个节点时，就把这个节点添加到新链表中，
+     * 然后再往下对比下一个节点，再把较小的节点添加到链表中
+     * <p>
+     * 当某个需要合并的链表为空时，则无需继续循环
+     * 将剩余的节点直接添加到新链表中即可
+     *
+     * @param headA 需要合并的链表 A 的头节点
+     * @param headB 需要合并的链表 B 的头节点
+     * @return 合并后的有序链表
+     * @author shiloh
+     * @date 2022/7/3 22:44
+     */
+    public static SingleLinkedList merge(HeroNode headA, HeroNode headB) {
+        final SingleLinkedList newLink = new SingleLinkedList();
+        HeroNode currentA = headA.getNext();
+        HeroNode currentB = headB.getNext();
+        HeroNode tempNode = newLink.getHead();
+        while (currentA != null && currentB != null) {
+            final int noA = currentA.getNo();
+            final int noB = currentB.getNo();
+            if (noA > noB) {
+                tempNode.setNext(currentB);
+                currentB = currentB.getNext();
+            } else {
+                tempNode.setNext(currentA);
+                currentA = currentA.getNext();
+            }
+            // 往后移
+            tempNode = tempNode.getNext();
+        }
+
+        // 添加剩余节点
+        if (currentA != null) {
+            tempNode.setNext(currentA);
+        }
+        if (currentB != null) {
+            tempNode.setNext(currentB);
+        }
+
+        return newLink;
     }
 }
 
