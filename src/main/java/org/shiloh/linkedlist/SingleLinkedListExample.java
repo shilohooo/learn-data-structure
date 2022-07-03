@@ -1,5 +1,7 @@
 package org.shiloh.linkedlist;
 
+import java.util.Stack;
+
 /**
  * 单链表应用实例
  *
@@ -64,12 +66,20 @@ public class SingleLinkedListExample {
         // System.out.printf("倒数第 %d 个节点为：%s", k, result);
 
         // 测试反转链表
-        System.out.println("反转前的链表数据：");
+        // System.out.println("反转前的链表数据：");
+        // singleLinkedList.list();
+        //
+        // reverseLink(singleLinkedList.getHead());
+        // System.out.println("反转后的链表数据：");
+        // singleLinkedList.list();
+
+        // 测试逆序打印链表
+        System.out.println("原来的链表：");
         singleLinkedList.list();
 
-        reverseLink(singleLinkedList.getHead());
-        System.out.println("反转后的链表数据：");
-        singleLinkedList.list();
+        // 逆序打印
+        System.out.println("逆序打印的链表：");
+        reversePrint(singleLinkedList.getHead());
     }
 
     /**
@@ -180,6 +190,33 @@ public class SingleLinkedListExample {
         }
         // 遍历结束后，将原先的头节点的 next 引用指向临时头部变量的 next 引用，实现单链表反转
         head.setNext(reverseHead.getNext());
+    }
+
+    /**
+     * 逆序打印单链表
+     *
+     * @param head 头节点
+     * @author shiloh
+     * @date 2022/7/3 22:12
+     */
+    public static void reversePrint(HeroNode head) {
+        HeroNode currentNode = head.getNext();
+        if (currentNode == null) {
+            System.out.println("链表为空");
+            return;
+        }
+
+        // 将链表中的所有节点都压入到栈中
+        final Stack<HeroNode> stack = new Stack<>();
+        while (currentNode != null) {
+            stack.push(currentNode);
+            currentNode = currentNode.getNext();
+        }
+
+        // 遍历栈中的内容
+        while (stack.size() > 0) {
+            System.out.println(stack.pop());
+        }
     }
 }
 
