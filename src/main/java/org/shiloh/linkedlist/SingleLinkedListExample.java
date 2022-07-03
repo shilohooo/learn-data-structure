@@ -153,7 +153,7 @@ public class SingleLinkedListExample {
     }
 
     /**
-     * 反转单链表，实现思路如下：
+     * 面试题解答：反转单链表，实现思路如下：
      *
      * <ol>
      *     <li>定义一个临时变量，用于遍历链表</li>
@@ -193,7 +193,7 @@ public class SingleLinkedListExample {
     }
 
     /**
-     * 逆序打印单链表
+     * 面试题解答：逆序打印单链表，使用栈数据结构，利用其先进后出的特点即可。
      *
      * @param head 头节点
      * @author shiloh
