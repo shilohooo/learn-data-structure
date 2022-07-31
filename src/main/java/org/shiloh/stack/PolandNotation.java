@@ -1,5 +1,6 @@
 package org.shiloh.stack;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
@@ -13,16 +14,60 @@ import java.util.Stack;
  */
 public class PolandNotation {
     public static void main(String[] args) {
-        // 定义一个逆波兰表达式（后缀表达式）
-        // 测试 - (3 + 4) * 5 - 6 => 3 4 + 5 * 6 - => 计算结果应为：29
-        // 测试 - (30 + 4) * 5 - 6 => 30 4 + 5 * 6 - => 计算结果应为：164
-        // 测试 - 4 * 5 - 8 + 60 + 8 / 2 => => 计算结果应为：76
-        final String suffixExpr = "4 5 * 8 - 60 + 8 2 / +";
-        // 将逆波兰表达式字符串以空格分隔，转换为 List
-        final List<String> reversePolandExprList = getReversePolandExprList(suffixExpr);
-        // 计算结果
-        final int result = calcReversePolandExpr(reversePolandExprList);
-        System.out.printf("逆波兰表达式：%s 的计算结果为：%d", suffixExpr, result);
+//        测试中缀表达式字符串转中缀表达式字符串列表
+        final String infixExpr = "1+((2+3)*4)-5";
+        final List<String> infixExprList = convertToInfixExprList(infixExpr);
+        System.out.println(infixExprList);
+
+//        // 定义一个逆波兰表达式（后缀表达式）
+//        // 测试 - (3 + 4) * 5 - 6 => 3 4 + 5 * 6 - => 计算结果应为：29
+//        // 测试 - (30 + 4) * 5 - 6 => 30 4 + 5 * 6 - => 计算结果应为：164
+//        // 测试 - 4 * 5 - 8 + 60 + 8 / 2 => => 计算结果应为：76
+//        final String suffixExpr = "4 5 * 8 - 60 + 8 2 / +";
+//        // 将逆波兰表达式字符串以空格分隔，转换为 List
+//        final List<String> reversePolandExprList = getReversePolandExprList(suffixExpr);
+//        // 计算结果
+//        final int result = calcReversePolandExpr(reversePolandExprList);
+//        System.out.printf("逆波兰表达式：%s 的计算结果为：%d", suffixExpr, result);
+    }
+
+    /**
+     * 将中缀表达式字符串转换为字符串列表，注意多位数拼接问题
+     *
+     * @param infixExpr 中缀表达式字符串
+     * @return 中缀表达式字符串列表
+     * @author shiloh
+     * @date 2022/7/31 23:07
+     */
+    public static List<String> convertToInfixExprList(String infixExpr) {
+        final List<String> infixExprList = new ArrayList<>();
+        // 扫描指针
+        int index = 0;
+        // 多位数拼接 builder
+        StringBuilder multiDigitBuilder;
+        // 每次遍历得到的字符
+        char c;
+        final int length = infixExpr.length();
+        do {
+            c = infixExpr.charAt(index);
+            // 如果当前遍历得到的字符不是一个数字，则直接添加到列表中
+            if (!Character.isDigit(c)) {
+                infixExprList.add(String.valueOf(c));
+                index++;
+                continue;
+            }
+
+            // 如果当前遍历得到的字符是一个数字，则需要考虑多位数的问题
+            multiDigitBuilder = new StringBuilder();
+            while (index < length && Character.isDigit(c = infixExpr.charAt(index))) {
+                multiDigitBuilder.append(c);
+                index++;
+            }
+            // 将多位数拼接结果添加到列表
+            infixExprList.add(multiDigitBuilder.toString());
+        } while (index < length);
+
+        return infixExprList;
     }
 
     /**
