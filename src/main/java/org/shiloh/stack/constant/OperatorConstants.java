@@ -46,4 +46,15 @@ public final class OperatorConstants {
         OPERATOR_PRIORITY_CACHE.put(MINUS_SIGN, 0);
     }
 
+    /**
+     * 获取运算符优先级，不存在的运算符则返回 -1
+     *
+     * @param operator 运算符
+     * @return 运算符优先级
+     * @author shiloh
+     * @date 2022/8/1 22:36
+     */
+    public static int getOperatorPriority(char operator) {
+        return OPERATOR_PRIORITY_CACHE.getOrDefault(operator, -1);
+    }
 }
