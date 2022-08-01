@@ -16,7 +16,7 @@ public class PolandNotation {
     public static void main(String[] args) {
 //        测试中缀表达式字符串转中缀表达式字符串列表
         final String infixExpr = "1+((2+3)*4)-5";
-        final List<String> infixExprList = convertToInfixExprList(infixExpr);
+        final List<String> infixExprList = toInfixExprList(infixExpr);
         System.out.println(infixExprList);
 
 //        // 定义一个逆波兰表达式（后缀表达式）
@@ -39,7 +39,7 @@ public class PolandNotation {
      * @author shiloh
      * @date 2022/7/31 23:07
      */
-    public static List<String> convertToInfixExprList(String infixExpr) {
+    public static List<String> toInfixExprList(String infixExpr) {
         final List<String> infixExprList = new ArrayList<>();
         // 扫描指针
         int index = 0;
