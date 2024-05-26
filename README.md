@@ -1,3 +1,1 @@
-# 学习数据结构
-
-凑齐10个字才能开源:(
+# Data Structure Code
